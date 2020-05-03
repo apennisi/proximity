@@ -1,0 +1,11 @@
+Number: 1 #camera number
+
+#Camera Params
+Camera1: ../videos/TownCentreXVID.avi
+Calibration1: ../configs/TownCentre-calibration.yaml
+MinimumDist1: 1.0 #meters
+
+#Detector Params
+Config: ../darknet/cfg/yolov3.cfg
+Weights: ../weights/yolov3.weights
+MinThreshold: 0.25
