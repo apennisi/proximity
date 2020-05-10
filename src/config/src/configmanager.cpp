@@ -1,5 +1,6 @@
 #include "configmanager.h"
 
+
 using namespace socialdistancing::config;
 
 bool 
@@ -99,8 +100,125 @@ ConfigManager::read(const std::string& config)
         
 				ss.str("");
         cameraParam.push_back(param);
-    }  
+    }
+
+    ss.str("");
+    check_tracking = false;
+    ss << "Tracking";
+    if(!yamlManager.getElem(ss.str(), check_tracking))
+    {
+      std::cout << "NO TRACKING ACTIVE!" << std::endl;
+    }
+
+    ss.str("");
+
+    if(check_tracking)
+    {
+      for(auto i = 0; i < cameraNum; ++i)
+      {
+        std::string tmpVar;
+        DeepSortParam sortParam;
+        ss << "MetricModel" << i+1;
+        if(!yamlManager.getElem(ss.str(), tmpVar))
+        {
+            std::cout << "MetricModel"<< i+1 << " is not specified!" << std::endl;
+            return false;
+        }
+        else
+        {
+          sortParam.setMetricModel(tmpVar);
+        }
+
+        ss.str("");
+        ss << "FeatureModel" << i+1;
+        if(!yamlManager.getElem(ss.str(), tmpVar))
+        {
+          std::cout << "FeatureModel" << i+1 << " is not specified!" << std::endl;
+          return false;
+        }
+        else
+        {
+          sortParam.setFeatureModel(tmpVar);
+        }
+
+        float tmpValue;
+        ss.str("");
+        ss << "NNBudget" << i+1;
+
+        if(!yamlManager.getElem(ss.str(), tmpValue))
+        {
+          std::cout << "NNBudget" << i+1 << " is not specified!" << std::endl;
+          return false;
+        }
+        else
+        {
+          sortParam.setNNBudget(tmpValue);
+        }
+
+        ss.str("");
+        ss << "MaxCosineDistance" << i+1;
+
+        if(!yamlManager.getElem(ss.str(), tmpValue))
+        {
+          std::cout << "MaxCosineDistance" << i+1 << " is not specified!" << std::endl;
+          return false;
+        }
+        else
+        {
+          sortParam.setCosineDistance(tmpValue);
+        }
+
+        ss.str("");
+        ss << "Dt" << i+1;
+
+        if(!yamlManager.getElem(ss.str(), tmpValue))
+        {
+          std::cout << "Dt" << i+1 << " is not specified!" << std::endl;
+          tmpValue = 1.;
+        }
+        sortParam.setDt(tmpValue);
+
+        ss.str("");
+        ss << "IouDistance" << i+1;
+
+        if(!yamlManager.getElem(ss.str(), tmpValue))
+        {
+          std::cout << "IouDistance" << i+1 << " is not specified!" << std::endl;
+          return false;
+        }
+        else
+        {
+          sortParam.setMaxIouDistance(tmpValue);
+        }
+
+        ss.str("");
+        ss << "MaxAge" << i+1;
+        int initValue;
+        if(!yamlManager.getElem(ss.str(), initValue))
+        {
+          std::cout << "MaxAge" << i+1 << " is not specified!" << std::endl;
+          initValue = 30;
+        }
+        sortParam.setMaxAge(initValue);
+
+        ss.str("");
+        ss << "NInit" << i+1;
         
+        if(!yamlManager.getElem(ss.str(), initValue))
+        {
+          std::cout << "NInit" << i+1 << " is not specified!" << std::endl;
+          initValue = 3;
+        }
+        sortParam.setInitValue(initValue);
+
+        deepParam.push_back(sortParam);
+
+        ss.str("");
+      }
+    }
+
+    ss.str("");
+    
     std::string detectorTmpVal;
     
     if(!yamlManager.getElem("Config", detectorTmpVal))
@@ -151,6 +269,23 @@ ConfigManager::print()
         param.print();
         i++;
         std::cout << std::endl;
+    }
+
+    if(check_tracking)
+    {
+      i = 0;
+      for(auto& param : deepParam)
+      {
+        std::cout << "TRACKING " << i+1 << std::endl;
+        param.print();
+        i++;
+        std::cout << std::endl;
+      }
+    }
+    else
+    {
+      std::cout << "TRACKING NO ACTIVE" << std::endl;
+      std::cout << std::endl;
     }
         
     std::cout << std::endl;

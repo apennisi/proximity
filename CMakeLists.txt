@@ -18,6 +18,9 @@ message(STATUS "    include path: ${YAML_CPP_INCLUDE_DIR}")
 message(STATUS "    libraries: ${YAML_CPP_LIBRARIES}")
 
 find_package(Eigen3 REQUIRED)
+find_package(Boost COMPONENTS system)
+find_package(TensorflowCC REQUIRED)
+find_package(CUDA)
 
 
 add_definitions(-Wuninitialized)
@@ -34,18 +37,18 @@ CHECK_CXX_COMPILER_FLAG("-std=c++14" COMPILER_SUPPORTS_CXX14)
 CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
 CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
 if(COMPILER_SUPPORTS_CXX14)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -pthread")
 elseif(COMPILER_SUPPORTS_CXX11)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 elseif(COMPILER_SUPPORTS_CXX0X)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -pthread")
 else()
   message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 endif()
 
 include_directories( ${OpenCV_INCLUDE_DIRS} )
-
 include_directories( ${EIGEN3_INCLUDE_DIR} )
+include_directories(${Boost_INCLUDE_DIRS})
 
 set(LIBRARY_OUTPUT_PATH ../lib)
 set(EXECUTABLE_OUTPUT_PATH ../bin)
@@ -62,5 +65,17 @@ object_detection()
 include(${CMAKE_CURRENT_SOURCE_DIR}/src/homography/CMakeLists.txt)
 homography()
 
-include(${CMAKE_CURRENT_SOURCE_DIR}/src/apps//CMakeLists.txt)
+include(${CMAKE_CURRENT_SOURCE_DIR}/src/features/CMakeLists.txt)
+features()
+
+include(${CMAKE_CURRENT_SOURCE_DIR}/src/matching/CMakeLists.txt)
+matchingtracks()
+
+include(${CMAKE_CURRENT_SOURCE_DIR}/src/thirdPart/CMakeLists.txt)
+thirdpartutils()
+
+include(${CMAKE_CURRENT_SOURCE_DIR}/src/segmentation/CMakeLists.txt)
+segmentationlib()
+
+include(${CMAKE_CURRENT_SOURCE_DIR}/src/apps/CMakeLists.txt)
 applications()

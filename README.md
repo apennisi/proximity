@@ -15,6 +15,7 @@ Proximity is a proof of concept which measure the social distancing between peop
 * Eigen
 * CUDA (not mandatory)
 * Yaml-cpp
+* Tensorflow (=1.14)
 
 # How to build
 
@@ -28,13 +29,15 @@ Proximity is a proof of concept which measure the social distancing between peop
 6. Download the COCO weights: 
 	- [https://pjreddie.com/media/files/yolov3.weights](https://pjreddie.com/media/files/yolov3.weights)
 	- Move the downloaded file into the folder *weights* (you have to create it) in the main folder (proximity)
-7. In the main folder *proximity*, create a folder build
-8. navigate into the folder build and compile it with the following commands: ```cmake .. && make```
+7. In the main folder *proximity*, launch the script *install_tensorflow.sh*
+8. Then, create a folder build
+9. Navigate into the folder build and compile it with the following commands: ```cmake .. && make```
 
 # How it works
 Download the video for testing from [here](https://drive.google.com/open?id=1o5JqqQT9q0Ag6jIHV5id0JNBqZBWgd4i), then:
-1. To launch the application: ```./multi_camera_proximity ../configs/config_town.yaml```
-2. To create a new homography file: ```./homography_app /path/to/the/source/image /path/to/the/destination/image /path/to/yaml/file (where you save the homography)```
+1. To launch the application for detecting and measuring the distance between people: ```./multi_camera_proximity ../configs/config_town.yaml```
+2. To launch the application for detecting, tracking and calculating the heatmap: ```./proximity ../configs/config_town_heatmap.yaml```
+3. To create a new homography file: ```./homography_app /path/to/the/source/image /path/to/the/destination/image /path/to/yaml/file (where you save the homography)```
 
 # LICENSE
 GNU

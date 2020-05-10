@@ -1,0 +1,22 @@
+Number: 1 #camera number
+
+#Camera Params
+Camera1: ../videos/TownCentreXVID.avi
+Calibration1: ../configs/TownCentre-calibration.yaml
+MinimumDist1: 1.0 #meters
+
+#Detector Params
+Config: ../darknet/cfg/yolov3.cfg
+Weights: ../weights/yolov3.weights
+MinThreshold: 0.25
+
+#Tracking
+Tracking: true
+MetricModel1: ../RUNNINGDATA/tensor_networks/111.meta
+FeatureModel1: ../RUNNINGDATA/tensor_networks/mars-small128.ckpt-68577
+NNBudget1: 100
+MaxCosineDistance1: 0.4
+IouDistance1: 0.7
+MaxAge1: 50
+NInit1: 5
+Dt1: 1.0

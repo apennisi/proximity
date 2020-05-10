@@ -12,6 +12,7 @@
 #include "detector_param.h"
 #include "camera_param.h"
 #include "yamlmanager.h"
+#include "deep_param.h"
 
 namespace socialdistancing
 {
@@ -97,6 +98,18 @@ namespace socialdistancing
                   return minDist;
                 }
 
+                inline const bool 
+                checkTracking() const
+                {
+                  return check_tracking;
+                }
+
+                inline const std::vector<DeepSortParam> 
+                deepSortParam() const
+                {
+                  return deepParam;
+                }
+
             private:
                 /**
                  * @brief check if a file exists on the hd
@@ -105,11 +118,13 @@ namespace socialdistancing
                 bool exist(const std::string& name) const;
             private:
                 DetectorParam detectorParam;
+                std::vector<DeepSortParam> deepParam;
                 std::vector<CameraParam> cameraParam;
                 YamlManager yamlManager;
                 cv::Mat planView;
                 std::vector<float> minDist;
                 bool show;
+                bool check_tracking;
                 int cameraNum;
         };
     }
