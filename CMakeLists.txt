@@ -3,7 +3,7 @@ cmake_policy(SET CMP0060 NEW)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -O3 -g")
 
-project( anyvision )
+project( proximity )
 
 
 find_package(OpenCV REQUIRED)
